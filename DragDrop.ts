@@ -1,0 +1,4 @@
+class DragDrop {
+   constructor() {
+   }
+}
