@@ -14,5 +14,6 @@
 	  "noUnusedLocals": true,
 	  "allowUnreachableCode": false,
 	  "strictNullChecks": true
-   }
+   },
+   "include": ["./src"]
 }

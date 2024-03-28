@@ -5,24 +5,30 @@ export class DragDrop {
    private whichDragged!: Element;
    private target: Element;
    constructor(draggables: IDraggable[], target: Element, numbered: boolean = false) {
-	  draggables.forEach((draggable: IDraggable, index: number) => {
-		  const draggableEl = draggable.element;
-		  draggableEl.classList.add("draggable");
-		  draggableEl.setAttribute("draggable", "true");
+	  this.draggables = [];
+	  this.target = target;
+	  this.reset(draggables, this.target, numbered);
+   }
+
+   private reset(sources: IDraggable[], target: Element, numbered: boolean = false) {
+	  sources.forEach((source: IDraggable, index: number) => {
+		  const sourceEl = source.element;
+		  sourceEl.classList.add("draggable");
+		  sourceEl.setAttribute("draggable", "true");
 		  if(numbered) {
 			 const span = document.createElement("span");
 			 span.textContent = `${index+1}`;
-			 draggableEl.appendChild(span);
+			 sourceEl.appendChild(span);
 		  }
-		  let draggableElContent: Text;
-		  if(typeof draggable.content === "string") {
-			 draggableElContent = document.createTextNode(draggable.content);
-			 draggableEl.appendChild(draggableElContent);
+		  let sourceElContent: Text;
+		  if(typeof source.content === "string") {
+			 sourceElContent = document.createTextNode(source.content);
+			 sourceEl.appendChild(sourceElContent);
 		  }
-		  draggableEl.addEventListener("dragstart", (event: Event) => {
+		  sourceEl.addEventListener("dragstart", (event: Event) => {
 			 this.whichDragged = <Element>event.target;
 		  });
-		  this.draggables[index] = draggableEl;
+		  this.draggables[index] = sourceEl;
 	  });
 	  this.target = target;
 	  this.target.classList.add("drop-target");

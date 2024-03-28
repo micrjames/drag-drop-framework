@@ -9,32 +9,53 @@ body {
  
    display: flex;
    align-items: center;
-   justify-content: space-between;
+   justify-content: center;
 
-   padding: 15px;
-   flex: 1;
-   margin: 0;
    font-family: 'Lato', sans-serif;
+   display: flex;
+   align-items: center;
+   justify-content: center;
 
    .container {
-	  width: 100vw;
-	  height: 100vh;
+	  width: 50vw;
+	  height: 50vh;
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	  background-color: $background-color;
 
 	  .draggable-bkg {
+		 display: flex;
+		 align-items: center;
+		 justify-content: center;
 		 border: 1px solid $border-color;                                                                             
+		 background-color: lighten($background-color, 30%);
 		 color: $text-color;
-		 padding: 0;
+		 width: 100px;
+		 height: 100px;
+		 margin-left: 20px;
 
 		 div {
 			background-color: darken($background-color, 10%);
+			width: 50px;
+			height: 50px;
 			&.draggable {
 			   cursor: pointer;
 			}
 		 }
 	  }
 	  .droppable-target {
+		 display: flex;
+		 align-items: center;
+		 justify-content: center;
+		 width: 100px;
+		 height: 100px;
+		 margin-right: 20px;
+		 background-color: lighten($background-color, 30%);
 		 div {
 			background-color: darken($background-color, 10%);
+			width: 50px;
+			height: 50px;
 			&.over {
 			   background-color: darken($background-color, 25%);
 			}
