@@ -1,4 +1,0 @@
-class DragDrop {
-   constructor() {
-   }
-}
