@@ -1,8 +1,44 @@
 @import 'utils/config';
 
+$border-color: #e3e5e4;
+$background-color: #c3c7ca;
+$text-color: #34444f;
+
 body {
+   background-color: #fff;
+ 
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+
+   padding: 15px;
+   flex: 1;
+   margin: 0;
+   font-family: 'Lato', sans-serif;
+
    .container {
 	  width: 100vw;
 	  height: 100vh;
+
+	  .draggable-bkg {
+		 border: 1px solid $border-color;                                                                             
+		 color: $text-color;
+		 padding: 0;
+
+		 div {
+			background-color: darken($background-color, 10%);
+			&.draggable {
+			   cursor: pointer;
+			}
+		 }
+	  }
+	  .droppable-target {
+		 div {
+			background-color: darken($background-color, 10%);
+			&.over {
+			   background-color: darken($background-color, 25%);
+			}
+		 }
+	  }
    }
 }
