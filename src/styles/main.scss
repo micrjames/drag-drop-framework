@@ -24,7 +24,7 @@ body {
 	  justify-content: space-between;
 	  background-color: $background-color;
 
-	  .draggable-bkg {
+	  .draggable-bkg, .droppable-target {
 		 display: flex;
 		 align-items: center;
 		 justify-content: center;
@@ -33,31 +33,16 @@ body {
 		 color: $text-color;
 		 width: 100px;
 		 height: 100px;
-		 margin-left: 20px;
-
+		 margin: 20px;
+		 &.over {
+			background-color: darken($background-color, 25%);
+		 }
 		 div {
 			background-color: darken($background-color, 10%);
 			width: 50px;
 			height: 50px;
 			&.draggable {
 			   cursor: pointer;
-			}
-		 }
-	  }
-	  .droppable-target {
-		 display: flex;
-		 align-items: center;
-		 justify-content: center;
-		 width: 100px;
-		 height: 100px;
-		 margin-right: 20px;
-		 background-color: lighten($background-color, 30%);
-		 div {
-			background-color: darken($background-color, 10%);
-			width: 50px;
-			height: 50px;
-			&.over {
-			   background-color: darken($background-color, 25%);
 			}
 		 }
 	  }

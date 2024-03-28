@@ -1,52 +1,71 @@
-import { IDraggable } from "utils";
+import { IDraggable, removeChildren } from "./utils";
 
 export class DragDrop {
    private draggables!: Element[];
    private whichDragged!: Element;
    private target: Element;
-   constructor(draggables: IDraggable[], target: Element, numbered: boolean = false) {
+   constructor(draggables: IDraggable[], target: Element) {
 	  this.draggables = [];
 	  this.target = target;
-	  this.reset(draggables, this.target, numbered);
+	  this.setup(draggables, this.target);
    }
 
-   private reset(sources: IDraggable[], target: Element, numbered: boolean = false) {
+   private setup(sources: IDraggable[], target: Element) {
+	  this.setup_sources(sources);
+	  this.setup_target(target);
+   }
+   private setup_sources(sources: IDraggable[]) {
 	  sources.forEach((source: IDraggable, index: number) => {
-		  const sourceEl = source.element;
-		  sourceEl.classList.add("draggable");
-		  sourceEl.setAttribute("draggable", "true");
-		  if(numbered) {
-			 const span = document.createElement("span");
-			 span.textContent = `${index+1}`;
-			 sourceEl.appendChild(span);
-		  }
-		  let sourceElContent: Text;
-		  if(typeof source.content === "string") {
-			 sourceElContent = document.createTextNode(source.content);
-			 sourceEl.appendChild(sourceElContent);
-		  }
-		  sourceEl.addEventListener("dragstart", (event: Event) => {
-			 this.whichDragged = <Element>event.target;
-		  });
-		  this.draggables[index] = sourceEl;
-	  });
-	  this.target = target;
-	  this.target.classList.add("drop-target");
-	  this.target.addEventListener("dragenter", (event: Event) => {
-		  const target = <Element>event.target;
-		  target.classList.add("over");
-	  });
-	  this.target.addEventListener("dragleave", (event: Event) => {
-		  const target = <Element>event.target;
-		  target.classList.remove("over");
-	  });
-	  this.target.addEventListener("dragover", (event: Event) => {
-		  event.preventDefault();
-	  });
-	  this.target.addEventListener("drop", (event: Event) => {
-		  event.preventDefault();
-		  const target = <Element>event.target;
-		  target.appendChild(this.whichDragged);
+		  this.draggables[index] = this.setup_source(source);
 	  });
    }
+   private setup_source(source: IDraggable): Element {
+	   const sourceEl = source.element;
+	   sourceEl.classList.add("draggable");
+	   sourceEl.setAttribute("draggable", "true");
+	   removeChildren(sourceEl);
+	   sourceEl.appendChild(source.content);
+	   sourceEl.addEventListener("dragstart", this.handleDragStart);
+
+	   return sourceEl;
+   }
+   private handleDragStart = (event: Event) => {
+	   this.whichDragged = <Element>event.target;
+   }
+   private setup_target(target: Element) {
+	  this.target = target;
+	  this.target.classList.add("drop-target");
+	  this.target.addEventListener("dragenter", this.handleDragEnter);
+	  this.target.addEventListener("dragleave", this.handleDragLeave);
+	  this.target.addEventListener("dragover", this.handleDragOver);
+	  this.target.addEventListener("drop", this.handleDrop);
+   }
+   private handleDragEnter = (event: Event) => {
+	   const target = <Element>event.target;
+	   target.classList.add("over");
+   };
+   private handleDragLeave = (event: Event) => {
+	   const target = <Element>event.target;
+	   target.classList.remove("over");
+   };
+   private handleDragOver = (event: Event) => {
+	   event.preventDefault();
+   };
+   private handleDrop = (event: Event) => {
+	   event.preventDefault();
+	   const newTarget = this.whichDragged.parentElement;
+	   const target = <Element>event.target;
+	   target.classList.remove("over");
+	   target.appendChild(this.whichDragged);
+
+	   const newSourceEl = this.whichDragged;
+	   let newDraggables: IDraggable[] = [];
+	   let newDraggable: IDraggable = {
+		 element: newSourceEl,
+		 content: document.createTextNode(<string>newSourceEl.textContent)
+	   };
+	   newDraggables.push(newDraggable);
+
+	   this.setup(newDraggables, <Element>newTarget);
+   };
 }
