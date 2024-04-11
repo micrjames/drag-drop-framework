@@ -1,29 +1,13 @@
 import "./styles/main.scss";
 
+import { Draggables } from "./ts/Draggables";
 import { DragDrop } from "./ts/DragDrop";
-import { IDraggable } from "./ts/utils";
 
-const body = document.body;
-const container = body.firstElementChild;
+import { container } from "./ts/incs";
 
-const draggableContainer = document.createElement("div");
-draggableContainer.classList.add("draggable-bkg");
-
-const draggableEl = document.createElement("div");
-const draggableText = document.createTextNode("some text");
-draggableContainer?.appendChild(draggableEl);
-
-let draggables: IDraggable[] = [];
-let draggable: IDraggable = {
-   element: <Element>draggableEl,
-   content: draggableText
-};
 const target = document.createElement("div");
 target.classList.add("droppable-target");
 
-container?.appendChild(<Element>draggableContainer);
 container?.appendChild(<Element>target);
 
-draggables.push(draggable);
-
-new DragDrop(draggables, <Element>target);
+new DragDrop(new Draggables(container, 1).draggables, <Element>target);
