@@ -3,16 +3,16 @@ import { IDraggable, removeChildren } from "./utils";
 export class DragDrop {
    private draggables!: Element[];
    private whichDragged!: Element;
-   private target: (Element | undefined);
-   constructor(draggables: IDraggable[], target: (Element | undefined)) {
+   private targets: (Element | undefined)[];
+   constructor(draggables: IDraggable[], targets: (Element | undefined)[]) {
 	  this.draggables = [];
-	  this.target = target;
-	  this.setup(draggables, this.target);
+	  this.targets = targets;
+	  this.setup(draggables, this.targets);
    }
 
-   private setup(sources: IDraggable[], target: (Element | undefined)) {
+   private setup(sources: IDraggable[], targets: (Element | undefined)[]) {
 	  this.setup_sources(sources);
-	  this.setup_target(target);
+	  this.setup_targets(targets);
    }
    private setup_sources(sources: IDraggable[]) {
 	  sources.forEach((source: IDraggable, index: number) => {
@@ -32,13 +32,14 @@ export class DragDrop {
    private handleDragStart = (event: Event) => {
 	   this.whichDragged = <Element>event.target;
    }
-   private setup_target(target: (Element | undefined)) {
-	  this.target = target;
-	  this.target?.classList.add("drop-target");
-	  this.target?.addEventListener("dragenter", this.handleDragEnter);
-	  this.target?.addEventListener("dragleave", this.handleDragLeave);
-	  this.target?.addEventListener("dragover", this.handleDragOver);
-	  this.target?.addEventListener("drop", this.handleDrop);
+   private setup_targets(targets: (Element | undefined)[]) {
+	  targets?.forEach(target => {
+		 target?.classList.add("drop-target");
+		 target?.addEventListener("dragenter", this.handleDragEnter);
+		 target?.addEventListener("dragleave", this.handleDragLeave);
+		 target?.addEventListener("dragover", this.handleDragOver);
+		 target?.addEventListener("drop", this.handleDrop);
+	  });
    }
    private handleDragEnter = (event: Event) => {
 	   const target = <Element>event.target;
@@ -53,10 +54,12 @@ export class DragDrop {
    };
    private handleDrop = (event: Event) => {
 	   event.preventDefault();
+	   const newTargets: Element[] = [];
 	   const newTarget = this.whichDragged.parentElement;
 	   const target = <Element>event.target;
 	   target.classList.remove("over");
 	   target.appendChild(this.whichDragged);
+	   newTargets.push(<Element>newTarget);
 
 	   const newSourceEl = this.whichDragged;
 	   let newDraggables: IDraggable[] = [];
@@ -66,6 +69,6 @@ export class DragDrop {
 	   };
 	   newDraggables.push(newDraggable);
 
-	   this.setup(newDraggables, <Element>newTarget);
+	   this.setup(newDraggables, newTargets);
    };
 }

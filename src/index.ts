@@ -8,5 +8,5 @@ import { container } from "./ts/incs";
 
 new DragDrop(
    new Draggables(container, 1).draggables,
-   new Targets(container, 1).targets.pop()
+   new Targets(container, 1).targets
 );
