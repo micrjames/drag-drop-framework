@@ -11,3 +11,13 @@
    left: 50%;
    transform: translate(-50%, -50%);
 }
+
+@mixin flex-layout($centered: true) {
+   display: flex;
+   @if($centered) {
+	  justify-content: center;
+   } @else {
+	  @content;
+   }
+   align-items: center;
+}

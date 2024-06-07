@@ -1,0 +1,27 @@
+@import 'Box';
+
+@mixin container {
+   width: 50%;
+   height: 50%;
+   @include flex-layout(false) {
+	  justify-content: space-between;
+   };
+   background-color: $background-color;
+
+   .draggable-bkg, .droppable-target {
+	  @include flex-layout;
+	  border: 1px solid $border-color;                                                                             
+	  background-color: lighten($background-color, 30%);
+	  @include Box(100px, 100px, $text-color, none, 20px);
+	  &.over {
+		 background-color: darken($background-color, 25%);
+	  }
+	  div {
+		 background-color: darken($background-color, 10%);
+		 @include Box;
+		 &.draggable {
+			cursor: pointer;
+		 }
+	  }
+   }
+}
