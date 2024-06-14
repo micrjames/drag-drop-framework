@@ -1,4 +1,5 @@
 import { IDraggable, createDiv } from "./utils";
+import { Draggable } from "./Draggable";
 
 export class Draggables {
    private draggableContainer: Element;
@@ -6,17 +7,7 @@ export class Draggables {
    constructor(context: (Element | null), n: number) {
 	  this.draggableContainer = createDiv("draggable-bkg");
 
-	  this._draggables = Array.from({length: n}, _ => {
-		 const draggableEl = createDiv("", "", "some text");
-
-		 this.draggableContainer?.appendChild(draggableEl);
-
-		 const draggable: IDraggable = {
-			element: <Element>draggableEl,
-			content: document.createTextNode(<string>draggableEl.textContent)
-		 };
-		 return draggable;
-	  });
+	  this._draggables = Array.from({length: n}, _ => new Draggable(this.draggableContainer).draggable);
 
 	  context?.appendChild(<Element>this.draggableContainer);
    }

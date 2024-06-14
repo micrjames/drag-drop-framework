@@ -8,7 +8,7 @@ export const removeChildren = (context: Element) => {
 	   context.removeChild(<Element>context.lastChild);
 }
 
-const buildEl = (el: string, className?: string, idName?: string, text?: string) => {
+const buildEl = (el: string, className?: string, idName?: string, text?: string): Element  => {
     const element = document.createElement(el);                              
     if(className) element.setAttribute("class", className);          
     if(idName) element.setAttribute("id", idName);     
@@ -20,6 +20,6 @@ const buildEl = (el: string, className?: string, idName?: string, text?: string)
     return element;
 }; 
 
-export const createDiv = (className?: string, idName?: string, text?: string) => {
+export const createDiv = (className?: string, idName?: string, text?: string): Element  => {
    return buildEl("div", className, idName, text);
 };
